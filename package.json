@@ -14,21 +14,6 @@
       "!**/external/**",
       "!**/fixtures/**",
       "!**/lcov-report/**"
-    ],
-    "moduledirectories": [
-      "node_modules/",
-      "./src"
-    ],
-    "testPathIgnorePatterns": [
-      "node_modules/"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
     ]
   },
   "type": "module",
@@ -36,10 +21,7 @@
     "express": "^4.17.1",
     "global": "^4.4.0",
     "jquery": "^3.5.1",
-    "node-fetch": "^3.2.4",
-    "path": "^0.12.7",
-    "react-native": "^0.68.2",
-    "react-native-gesture-handler": "^2.4.2"
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.10.4",

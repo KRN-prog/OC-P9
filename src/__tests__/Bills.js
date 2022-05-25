@@ -8,9 +8,11 @@ import { bills } from "../fixtures/bills.js"
 import { ROUTES_PATH } from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
 import Bill from "../containers/Bills.js"
+import mockStore from "../__mocks__/store"
 import router from "../app/Router.js";
-import Store from "../app/Store.js";
-import fetch from 'node-fetch'
+// import fetch from 'node-fetch'
+
+jest.mock("../app/store", () => mockStore)
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
@@ -78,11 +80,10 @@ describe("Given I am connected as an employee", () => {
     })
 
     test("getBills", async () => {
-      const bills = new Bill({ document, onNavigate: ROUTES_PATH.Bills, store: Store, localStorage: window.localStorage })
+      const bills = new Bill({ document, onNavigate: ROUTES_PATH.Bills, store: mockStore, localStorage: window.localStorage })
       //const getBills = jest.fn(bills.getBills())
       //await(getBills)
-      console.log(Store.bills())
-      const getbills = await(Store.bills())
+      const getbills = await mockStore.bills().list()
       expect(getbills).toBeTruthy()
       /*return bills.getBills().then(snapshot => {
         console.log(snapshot)

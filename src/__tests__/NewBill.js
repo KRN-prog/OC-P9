@@ -10,7 +10,11 @@ import { ROUTES_PATH } from '../constants/routes.js'
 
 import NewBillUI from "../views/NewBillUI.js"
 import NewBill from "../containers/NewBill.js"
-import Store from "../app/Store.js"
+// import Store from "../app/Store.js"
+import mockStore from "../__mocks__/store"
+import router from "../app/Router.js";
+
+jest.mock("../app/store", () => mockStore)
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on NewBill Page", () => {
@@ -25,7 +29,7 @@ describe("Given I am connected as an employee", () => {
     test("Test n°2", () => {
       const html = NewBillUI()
       document.body.innerHTML = html
-      const newBill = new NewBill({ document, onNavigate: ROUTES_PATH.Bills, store: Store, localStorage: window.localStorage })
+      const newBill = new NewBill({ document, onNavigate: ROUTES_PATH.Bills, store: mockStore, localStorage: window.localStorage })
       const changeFile = screen.getByTestId('file')
       const HandleChangeFile = jest.fn((e) => newBill.handleChangeFile(e))
       changeFile.addEventListener('change', HandleChangeFile)
@@ -34,7 +38,7 @@ describe("Given I am connected as an employee", () => {
     })
 
     test("test n°3", () => {
-      const newBill = new NewBill({ document, onNavigate: ROUTES_PATH.NewBill, store: Store, localStorage: window.localStorage })
+      const newBill = new NewBill({ document, onNavigate: ROUTES_PATH.NewBill, store: mockStore, localStorage: window.localStorage })
       const formNewBill = screen.getByTestId('form-new-bill')
       const user = {"type":"Employee","email":"employee@test.tdl","password":"employee","status":"connected"}
 
@@ -45,12 +49,10 @@ describe("Given I am connected as an employee", () => {
       expect(HandleSubmit).toHaveBeenCalled()
     })
     test("test async", async () => {
-      const newBill = new NewBill({ document, onNavigate: ROUTES_PATH.Bills, store: Store, localStorage: window.localStorage })
-      const HandleChangeFile = jest.fn((e) => newBill.handleChangeFile(e))
-      const storeBill = Store.bill(HandleChangeFile)
-      return storeBill.then(data => {
-        expect(data).toBeTruthy()
-      })
+      const newBill = new NewBill({ document, onNavigate: ROUTES_PATH.Bills, store: mockStore, localStorage: window.localStorage })
+      // const HandleChangeFile = jest.fn((e) => newBill.handleChangeFile(e))
+      const storeBill = await mockStore.bills().create(newBill)
+      expect(storeBill).toEqual({fileUrl: 'https://localhost:3456/images/test.jpg', key: '1234'})
     })
   })
 })
